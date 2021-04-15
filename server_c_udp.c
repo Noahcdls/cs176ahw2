@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
    socklen_t fromlen;
    struct sockaddr_in server;
    struct sockaddr_in from;
-   char buf[1024];
+   char buf[256];
 
    if (argc < 2) {
       fprintf(stderr, "ERROR, no port provided\n");
@@ -37,19 +37,19 @@ int main(int argc, char *argv[])
        error("binding");
    fromlen = sizeof(struct sockaddr_in);
    while (1) {
-       n = recvfrom(sock,buf,1024,0,(struct sockaddr *)&from,&fromlen);
+       n = recvfrom(sock,buf,256,0,(struct sockaddr *)&from,&fromlen);
        if (n < 0) error("recvfrom");
        
        
      int total = 0;
-     char outputBuffer[1024];
-     bzero(outputBuffer,1024);
+     char outputBuffer[256];
+     bzero(outputBuffer,256);
      int characters = 0;
   do
   { 
      total = 0;
      int end = 0;
-     for(int i = 0; i < 1024; i++)
+     for(int i = 0; i < 256; i++)
      {
           if(isalpha(buf[i]) > 0){//alphabetical character
           sprintf(outputBuffer,"From server: Sorry, cannot compute!\n");
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
      }
   }while(total > 9);      
 
-       n = sendto(sock,outputBuffer, 1024,
+       n = sendto(sock,outputBuffer, 256,
                   0,(struct sockaddr *)&from,fromlen);
        if (n  < 0) error("sendto");
    }
