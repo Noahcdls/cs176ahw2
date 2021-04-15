@@ -39,22 +39,20 @@ int main(int argc, char *argv[])
    while (1) {
        n = recvfrom(sock,buf,1024,0,(struct sockaddr *)&from,&fromlen);
        if (n < 0) error("recvfrom");
-       write(1,"Received a datagram: ",21);
-       write(1,buf,n);
        
        
      int total = 0;
-     char outputBuffer[256];
-     bzero(outputBuffer,256);
+     char outputBuffer[1024];
+     bzero(outputBuffer,1024);
      int characters = 0;
   do
   { 
      total = 0;
      int end = 0;
-     for(int i = 0; i < 256; i++)
+     for(int i = 0; i < 1024; i++)
      {
           if(isalpha(buf[i]) > 0){//alphabetical character
-          sprintf(outputBuffer,"Sorry, cannot compute!\n");
+          sprintf(outputBuffer,"From server: Sorry, cannot compute!\n");
           characters = 1; 
           end = 0;
          break;
@@ -79,7 +77,7 @@ int main(int argc, char *argv[])
      }
   }while(total > 9);      
 
-       n = sendto(sock,outputBuffer,sizeof(outputBuffer),
+       n = sendto(sock,outputBuffer, 1024,
                   0,(struct sockaddr *)&from,fromlen);
        if (n  < 0) error("sendto");
    }

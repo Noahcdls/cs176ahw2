@@ -59,7 +59,7 @@ while(1){
      {
           if(isalpha(buffer[i]) > 0){//alphabetical character
           printf("is alpha");
-          sprintf(outputBuffer,"Sorry, cannot compute!\n");
+          sprintf(outputBuffer,"From server: Sorry, cannot compute!\n");
           characters = 1; 
           end = 0;
          break;
