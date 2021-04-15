@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
   do{ 
      total = 0;
      int end = 0;
+     characters = 0;
      for(int i = 0; i < 128; i++)
      {
           if(isalpha(buf[i]) > 0){//alphabetical character
@@ -64,10 +65,10 @@ int main(int argc, char *argv[])
      
           for(int i = 0; i < end; i++)
      {
-          int digit = buf[i] - '0';
-          //printf("%c == %d\n", buf[i], digit);
-          if(digit > 0 && digit < 10)
-          total += digit;
+          int digit = buf[i] - 48;
+         
+          if(digit > 0 && digit < 10){
+          total += digit;}
      }
      
      
