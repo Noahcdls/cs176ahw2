@@ -34,10 +34,10 @@ int main(int argc, char *argv[])
    length=sizeof(struct sockaddr_in);
    printf("Enter string: ");
    bzero(buffer,128);
-   fgets(buffer,127,stdin);
+   fgets(buffer,128,stdin);
    
    n=sendto(sock,buffer,
-            strlen(buffer),0,(const struct sockaddr *)&server,length);
+            128,0,(const struct sockaddr *)&server,length);
    if (n < 0) error("Sendto");
  
    n = recvfrom(sock,buffer,128,0,(struct sockaddr *)&from, &length);

@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
        
        
      int total = 0;
-     char outputBuffer[256];
-     bzero(outputBuffer,256);
+     char outputBuffer[128];
+     sprintf(outputBuffer, "");
      int characters = 0;
   do{ 
      total = 0;
@@ -51,6 +51,8 @@ int main(int argc, char *argv[])
      characters = 0;
      for(int i = 0; i < 128; i++)
      {
+          end = i;
+          printf("%c", buf[i]);
           if(isalpha(buf[i]) > 0){//alphabetical character
           sprintf(outputBuffer,"From server: Sorry, cannot compute!\n");
           characters = 1; 
@@ -58,7 +60,6 @@ int main(int argc, char *argv[])
          break;
      }
      else if(buf[i] == '\0'){
-     end = i;
       break;
      }
      }
