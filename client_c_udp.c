@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
          hp->h_length);
    server.sin_port = htons(atoi(argv[2]));
    length=sizeof(struct sockaddr_in);
-   write(1, "Enter string: ", 15);
+   printf("Enter string: ");
    bzero(buffer,256);
    fgets(buffer,255,stdin);
    
@@ -42,10 +42,7 @@ int main(int argc, char *argv[])
  
    n = recvfrom(sock,buffer,256,0,(struct sockaddr *)&from, &length);
    if (n < 0) error("recvfrom");
-   write(1,buffer,256);
-  
-   
-   close(sock);
+   printf(buffer);
    return 0;
 }
 
