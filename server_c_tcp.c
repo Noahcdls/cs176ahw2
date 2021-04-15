@@ -73,7 +73,7 @@ while(1){
           for(int i = 0; i < end; i++)
      {
           int digit = buffer[i] - '0';
-          if(digit > -1 && digit < 10)
+          if(digit > 0 && digit < 10)
           total += digit;
      }
      

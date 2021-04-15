@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
    unsigned int length;
    struct sockaddr_in server, from;
    struct hostent *hp;
-   char buffer[256];
+     char buffer[256];
    
    if (argc != 3) { printf("Usage: server port\n");
                     exit(1);
