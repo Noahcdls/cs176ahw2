@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
    unsigned int length;
    struct sockaddr_in server, from;
    struct hostent *hp;
-     char buffer[256];
+     char buffer[128];
    
    if (argc != 3) { printf("Usage: server port\n");
                     exit(1);
@@ -33,14 +33,14 @@ int main(int argc, char *argv[])
    server.sin_port = htons(atoi(argv[2]));
    length=sizeof(struct sockaddr_in);
    printf("Enter string: ");
-   bzero(buffer,256);
-   fgets(buffer,255,stdin);
+   bzero(buffer,128);
+   fgets(buffer,127,stdin);
    
    n=sendto(sock,buffer,
             strlen(buffer),0,(const struct sockaddr *)&server,length);
    if (n < 0) error("Sendto");
  
-   n = recvfrom(sock,buffer,256,0,(struct sockaddr *)&from, &length);
+   n = recvfrom(sock,buffer,128,0,(struct sockaddr *)&from, &length);
    if (n < 0) error("recvfrom");
    printf(buffer);
    return 0;

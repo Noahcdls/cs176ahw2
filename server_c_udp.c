@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
    socklen_t fromlen;
    struct sockaddr_in server;
    struct sockaddr_in from;
-   char buf[256];
+   char buf[128];
 
    if (argc < 2) {
       fprintf(stderr, "ERROR, no port provided\n");
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
        error("binding");
    fromlen = sizeof(struct sockaddr_in);
    while (1) {
-       n = recvfrom(sock,buf,256,0,(struct sockaddr *)&from,&fromlen);
+       n = recvfrom(sock,buf,128,0,(struct sockaddr *)&from,&fromlen);
        if (n < 0) error("recvfrom");
        
        
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   do{ 
      total = 0;
      int end = 0;
-     for(int i = 0; i < 256; i++)
+     for(int i = 0; i < 128; i++)
      {
           if(isalpha(buf[i]) > 0){//alphabetical character
           sprintf(outputBuffer,"From server: Sorry, cannot compute!\n");
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
           for(int i = 0; i < end; i++)
      {
           int digit = buf[i] - '0';
+          //printf("%c == %d\n", buf[i], digit);
           if(digit > 0 && digit < 10)
           total += digit;
      }
