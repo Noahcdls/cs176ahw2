@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
      int sockfd, newsockfd, portno;
      socklen_t clilen;
-     char buffer[128];
+     char buffer[256];
      struct sockaddr_in serv_addr, cli_addr;
      int n;
      if (argc < 2) {
@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
      if (bind(sockfd, (struct sockaddr *) &serv_addr,
               sizeof(serv_addr)) < 0) 
               error("ERROR on binding");
+while(1){              
      if(listen(sockfd,1) < 0)
        error("ERROR on listening");
      clilen = sizeof(cli_addr);
@@ -41,22 +42,26 @@ int main(int argc, char *argv[])
                  &clilen);
      if (newsockfd < 0) 
           error("ERROR on accept");
-     bzero(buffer,128);
-     n = read(newsockfd,buffer,127);
+     bzero(buffer,256);
+     n = read(newsockfd,buffer,255);
      if (n < 0) error("ERROR reading from socket");
      
-     int total = 10;
-  while(total > 9)
-  {  
+     int total = 0;
+     char outputBuffer[256];
+     bzero(outputBuffer,256);
      int characters = 0;
+  do
+  {  
+      
      total = 0;
      int end = 0;
-     for(int i = 0; i < 128; i++)
+     for(int i = 0; i < 256; i++)
      {
-          if(isalpha(buffer[i])){//alphabetical character
-          n = write(newsockfd,"Sorry, cannot compute!",22);
+          if(isalpha(buffer[i]) > 0){//alphabetical character
+          printf("is alpha");
+          sprintf(outputBuffer,"Sorry, cannot compute!\n");
           characters = 1; 
-          if (n < 0) error("ERROR writing to socket");
+          end = 0;
          break;
      }
      else if(buffer[i] == '\0'){
@@ -71,21 +76,23 @@ int main(int argc, char *argv[])
           if(digit > -1 && digit < 10)
           total += digit;
      }
-     char tempword[20];
-     sprintf(tempword, "From server: %d", total);
+     
      
      if(characters == 0){
-     n = write(newsockfd, tempword , sizeof(tempword));
-     n = read(newsockfd,buffer,127);
-     if (n < 0) error("ERROR writing to socket");
+     sprintf(outputBuffer, "%sFrom server: %d\n", outputBuffer, total);
+     sprintf(buffer, "%d", total);
+     //n = write(newsockfd, tempword , sizeof(tempword));
+     //n = read(newsockfd,buffer,255);
+     //if (n < 0) error("ERROR writing to socket");
      }
      
-     sprintf(buffer, "%d", total);
-     }
-     sprintf(buffer, "d");
-     n = write(newsockfd, buffer , sizeof(buffer)); 
+    // sprintf(buffer, "%d", total);
+     }while(total > 9);
+     //sprintf(buffer, "d");
+     n = write(newsockfd, outputBuffer , sizeof(buffer)); 
      if (n < 0) error("ERROR writing to socket");
+  
      close(newsockfd);
-     close(sockfd);
+     }
      return 0; 
 }
