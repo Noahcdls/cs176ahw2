@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
-
+//base code to set up client originally from http://www.linuxhowtos.org/data/6/client_tcp.c
 void error(const char *msg)
 {
     perror(msg);
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
        exit(0);
     }
     portno = atoi(argv[2]);
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);//set up client
     if (sockfd < 0) 
         error("ERROR opening socket");
     server = gethostbyname(argv[1]);
@@ -38,19 +38,19 @@ int main(int argc, char *argv[])
          (char *)&serv_addr.sin_addr.s_addr,
          server->h_length);
     serv_addr.sin_port = htons(portno);
-    if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
+    if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) //connect to server
         error("ERROR connecting");
     printf("Enter string: ");
     bzero(buffer,256);
     fgets(buffer,256,stdin);
-    n = write(sockfd,buffer,strlen(buffer));
+    n = write(sockfd,buffer,strlen(buffer));//write to server
     if (n < 0) 
          error("ERROR writing to socket");
     bzero(buffer,256);
-    n = read(sockfd,buffer,256);
+    n = read(sockfd,buffer,256);//read server response
     if (n < 0) 
          error("ERROR reading from socket");   
-    printf("%s",buffer);
+    printf("%s",buffer);//print out response
 
     close(sockfd);
     return 0;

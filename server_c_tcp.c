@@ -6,6 +6,7 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+//base code to set up client originally from http://www.linuxhowtos.org/data/6/server_tcp.c
 void error(const char *msg)
 {
     perror(msg);
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
          fprintf(stderr,"ERROR, no port provided\n");
          exit(1);
      }
-     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+     sockfd = socket(AF_INET, SOCK_STREAM, 0);//set up port and server
      if (sockfd < 0) 
         error("ERROR opening socket");
      bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -33,21 +34,21 @@ int main(int argc, char *argv[])
      if (bind(sockfd, (struct sockaddr *) &serv_addr,
               sizeof(serv_addr)) < 0) 
               error("ERROR on binding");
-while(1){              
-     if(listen(sockfd,1) < 0)
+while(1){//run server forever
+     if(listen(sockfd,1) < 0)//wait for message
        error("ERROR on listening");
-     clilen = sizeof(cli_addr);
+     clilen = sizeof(cli_addr);//set up and store new client
      newsockfd = accept(sockfd, 
                  (struct sockaddr *) &cli_addr, 
                  &clilen);
      if (newsockfd < 0) 
           error("ERROR on accept");
      bzero(buffer,256);
-     n = read(newsockfd,buffer,255);
+     n = read(newsockfd,buffer,255);//read message from client
      if (n < 0) error("ERROR reading from socket");
      
-     int total = 0;
-     char outputBuffer[256];
+     int total = 0;//sum of integers
+     char outputBuffer[256];//buffer for response message
      bzero(outputBuffer,256);
      int characters = 0;
   do
@@ -55,7 +56,7 @@ while(1){
       
      total = 0;
      int end = 0;
-     for(int i = 0; i < 256; i++)
+     for(int i = 0; i < 256; i++)//iterate every character to see if valid
      {
           if(isalpha(buffer[i]) > 0){//alphabetical character
           printf("is alpha");
@@ -72,27 +73,23 @@ while(1){
      
           for(int i = 0; i < end; i++)
      {
-          int digit = buffer[i] - '0';
+          int digit = buffer[i] - '0';//convert to integer from ascii
           if(digit > 0 && digit < 10)
           total += digit;
      }
      
      
-     if(characters == 0){
+     if(characters == 0){//no alphabetical characters so write to buffers for message and new value to evaluate for sum
      sprintf(outputBuffer, "%sFrom server: %d\n", outputBuffer, total);
      sprintf(buffer, "%d", total);
-     //n = write(newsockfd, tempword , sizeof(tempword));
-     //n = read(newsockfd,buffer,255);
-     //if (n < 0) error("ERROR writing to socket");
      }
-     
-    // sprintf(buffer, "%d", total);
+
      }while(total > 9);
-     //sprintf(buffer, "d");
-     n = write(newsockfd, outputBuffer , sizeof(buffer)); 
+
+     n = write(newsockfd, outputBuffer , sizeof(buffer)); //write back to client
      if (n < 0) error("ERROR writing to socket");
   
-     close(newsockfd);
+     close(newsockfd);//close connection with client
      }
      return 0; 
 }
